@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="crh" class="sys.crh.data.model.Crh"></bean>
+	<bean id="engine" class="sys.crh.data.model.Engine"></bean>
+	<bean id="realTimeData" class="sys.crh.data.model.RealTimeData"></bean>
+	
+	<bean id="crhDao" class="sys.crh.data.dao.CRHDao"></bean>
+	<bean id="crhService" class="sys.crh.data.service.CRHService"></bean>
+</beans>

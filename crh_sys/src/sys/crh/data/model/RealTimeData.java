@@ -5,7 +5,7 @@ import java.util.*;
 public class RealTimeData {
 	private long id;
 	private long engineId;
-	private String crhNo;
+	private long crhId;
 	private double ybdianya;
 	private double ybdianliu;
 	private double kzdianya;
@@ -26,12 +26,12 @@ public class RealTimeData {
 		this.temperature = temperature;
 		this.speed = speed;
 	}
-	public RealTimeData(long id, long engineId, String crhNo, double ybdianya, double ybdianliu, double kzdianya, double zjdianya,
+	public RealTimeData(long id, long engineId, long crhId, double ybdianya, double ybdianliu, double kzdianya, double zjdianya,
 			double djdianliu, double djpinlv, double qyzhidongli, double speed, double jiasudu, 
 			double temperature, double zdxinhao, double dzdianliu, Date dateTime){
 		this.id = id;
 		this.engineId = engineId;
-		this.crhNo = crhNo;
+		this.crhId = crhId;
 		this.ybdianya = ybdianya;
 		this.ybdianliu = ybdianliu;
 		this.kzdianya = kzdianya;
@@ -62,11 +62,11 @@ public class RealTimeData {
 		this.engineId = engineId;
 	}
 	
-	public String getCrhNo(){
-		return this.crhNo;
+	public long getCrhId(){
+		return this.crhId;
 	}
-	public void setCrhNo(String crhNo){
-		this.crhNo = crhNo;
+	public void setCrhId(long crhId){
+		this.crhId = crhId;
 	}
 	
 	public void setZdxinhao(double zdxinhao){

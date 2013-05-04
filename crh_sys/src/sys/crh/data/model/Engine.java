@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Engine {
 	private long id;
-	private String engineId;
+	private String engineNo;
 	private long crhId;
 	private String setupType;
 	private String suitTrain;
@@ -25,14 +25,14 @@ public class Engine {
 	
 	public Engine() {}
 	
-	public Engine(long id, String engineId, long crhId, String setupType,
+	public Engine(long id, String engineNo, long crhId, String setupType,
 			String suitTrain, int power, int voltage, int number,
 			String lineType, String jyRank, String coolType, int weight,
 			int maxRevolution, String workType, String tfQuality,
 			String diaTemper, String diaSpeed, String produceFactory,
 			Date produceDate) {
 		this.id = id;
-		this.engineId = engineId;
+		this.engineNo = engineNo;
 		this.crhId = crhId;
 		this.setupType = setupType;
 		this.suitTrain = suitTrain;
@@ -57,11 +57,11 @@ public class Engine {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getEngineId() {
-		return engineId;
+	public String getEngineNo() {
+		return engineNo;
 	}
-	public void setEngineId(String engineId) {
-		this.engineId = engineId;
+	public void setEngineNo(String engineNo) {
+		this.engineNo = engineNo;
 	}
 	public long getCrhId() {
 		return crhId;

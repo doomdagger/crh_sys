@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import sys.crh.data.model.RealTimeData;
 import sys.crh.data.model.Crh;
@@ -23,7 +24,7 @@ public class CRHDao {
 	public static final String queryForEngineIdWithEngineNoSQL = "SELECT ID FROM t_engine WHERE FEngineID=:engineNo";
 	public static final String queryForEngineWithEngineIdSQL = "SELECT * FROM t_engine WHERE ID=:engineId";
 	public static final String addRealTimeDataSQL = "INSERT INTO t_realtimedata (`idt_engine`, `idt_crh`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime`) " +
-			"VALUES (:engineId,:crhId,:ybdianya,:ybdianliu,:kzdianya,:zjdianya,:djdianliu,:djpinlv,:qyzhidongli,:speed,:jiasudu,:temperature,:zdxinhao,:dzdianliu,:dateTime);";
+			"VALUES (:engineId,:crhId,:ybdianya,:ybdianliu,:kzdianya,:zjdianya,:djdianliu,:djpinlv,:qyzhidongli,:speed,:jiasudu,:temperature,:zdxinhao,:dzdianliu,:dateTime)";
 	public static final String queryForRealTimeDataSQL = "SELECT * FROM t_realtimedata";
 	public static final String queryForRealTimeDataWithCrhNoSQL = "SELECT * FROM t_realtimedata WHERE idt_crh = :crhId";
 	public static final String queryForRealTimeDataWithCrhNoAndEngineNoSQL = "SELECT * FROM t_realtimedata WHERE idt_crh = :crhId AND idt_engine = :engineId";
@@ -32,12 +33,32 @@ public class CRHDao {
 	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL = "SELECT * FROM t_realtimedata WHERE idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate";
 	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL = "SELECT * FROM t_realtimedata WHERE idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate AND FDatatime <= :endDate";
 
-	public static final String addCrhSQL="";
+	public static final String addCrhSQL="INSERT INTO `t_crh` (`FCRHNo`, `FCRHModelType`, `FCRHType`, `FFactory`, `FProduceDate`, `FRouteline`, `FRemark`, `FCreatetime`, `FEdittime`, `FCreator`, `FEditor`) " +
+			"VALUES (:crhNo, :crhModelType, :crhType, :factory, :produceDate, :routeLine, :remark, :createTime, :editTime, :creator, :editor)";
+	public static final String addEngineSQL="INSERT INTO `train_sys`.`t_engine` (`FEngineID`, `id_t_crh`, `FSetupType`, `FSuitTrain`, `FPower`, `Fvoltage`, `FNumber`, `FLineType`, `FJYRank`, `FCoolType`, `FWeight`, `FMaxrevolution`, `FWorkType`, `FTFQuality`, `FDiaTemper`, `FDiaSpeed`, `FProduceFac`, `FProduceDate`) " +
+			"VALUES (:engineNo, :crhId, :setupType, :suitTrain, :power, :voltage, :number, :lineType, :jyRank, :coolType, :weight, :maxRevolution, :workType, :tfQuality, :diaTemper, :diaSpeed, :produceFactory, :produceDate)";
 	
 	private NamedParameterJdbcTemplate template;
 	public void setTemplate(NamedParameterJdbcTemplate template){
 		this.template = template;
 	}
+	
+	
+	/*
+	 * add train and engine
+	 */
+	public boolean addCrh(Crh crh){
+		SqlParameterSource sps = new BeanPropertySqlParameterSource(crh);
+		template.update(addCrhSQL, sps);
+		return true;
+	}
+	
+	public boolean addEngine(Engine engine){
+		SqlParameterSource sps = new BeanPropertySqlParameterSource(engine);
+		template.update(addEngineSQL, sps);
+		return true;
+	}
+	
 	
 	/*
 	 * util:get crhNo With crhId and inverse
@@ -140,67 +161,54 @@ public class CRHDao {
 	/*
 	 * third model: history data model
 	 */
-	public ArrayList<RealTimeData> queryForRealTimeData(){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeData(){
+		return template.query(queryForRealTimeDataSQL, new MapSqlParameterSource(), new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNo(String crhNo){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNo(String crhNo){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo);
+		return template.query(queryForRealTimeDataWithCrhNoSQL, sps, new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNo(String crhNo, String engineNo){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNo(String crhNo, String engineNo){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("engineNo", engineNo);
+		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoSQL, sps, new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDate(String crhNo, Date startDate){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDate(String crhNo, Date startDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate);
+		return template.query(queryForRealTimeDataWithCrhNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDateAndEndDate(String crhNo, Date startDate){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDateAndEndDate(String crhNo, Date startDate, Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("endDate", endDate);
+		return template.query(queryForRealTimeDataWithCrhNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDate(String crhNo, String engineNo, Date startDate){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDate(String crhNo, String engineNo, Date startDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("engineNo", engineNo);
+		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public ArrayList<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDate(String crhNo,String engineNo, Date startDate,Date endDate){
-		
-		return null;
+	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDate(String crhNo,String engineNo, Date startDate,Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("engineNo", engineNo).addValue("endDate", endDate);
+		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
+	}
+	
+	private class RealTimeDataRowMapper implements RowMapper<RealTimeData>{
+		public RealTimeData mapRow(ResultSet rs, int index) throws SQLException{
+			RealTimeData rel = new RealTimeData();
+			rel.setId(rs.getLong("ID"));
+			rel.setEngineId(rs.getLong("idt_engine"));
+			rel.setCrhId(rs.getLong("idt_crh"));
+			rel.setYbdianya(rs.getDouble("Fyb_dianya"));
+			rel.setYbdianliu(rs.getDouble("Fyb_dianliu"));
+			rel.setKzdianya(rs.getDouble("Fkz_dianya"));
+			rel.setZjdianya(rs.getDouble("Fzj_dianya"));
+			rel.setDjdianliu(rs.getDouble("Fdj_dianliu"));
+			rel.setDjpinlv(rs.getDouble("Fdj_pinlv"));
+			rel.setZdxinhao(rs.getDouble("Fzdxinhao"));
+			rel.setDzdianliu(rs.getDouble("Fdzdianliu"));
+			rel.setQyzhidongli(rs.getDouble("Fqy_kongzhili"));
+			rel.setSpeed(rs.getDouble("FSpeed"));
+			rel.setJiasudu(rs.getDouble("Fjiasudu"));
+			rel.setTemperature(rs.getDouble("Ftemperature"));
+			rel.setDateTime(rs.getDate("FDatatime"));
+			return rel;
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

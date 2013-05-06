@@ -34,6 +34,5 @@
 	</bean>
 	
 	<bean id="crhDao" class="sys.crh.data.dao.CRHDao" p:template-ref="template"></bean>
-	<bean id="crhHandler" class="sys.crh.data.io.CRHFileHandler"></bean>
-	<bean id="crhService" class="sys.crh.data.service.CRHService" p:dao-ref="crhDao" p:handler-ref="crhHandler"></bean>
+	<bean id="crhService" class="sys.crh.data.service.CRHService" p:dao-ref="crhDao"></bean>
 </beans>

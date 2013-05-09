@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.dev" value="true"></constant>
+	<package name="main" extends="struts-default" namespace="/">
+		<action name="index" class="sys.crh.web.struts.action.TestAction">
+			<result>/index.jsp</result>
+		</action>
+		<action name="realtimedata" class="sys.crh.web.struts.action.RealTimeDataAction">
+			<result>data.json</result>
+		</action>
+		<action name="queryhistorydata" class="sys.crh.web.struts.action.HistoryDataQuery">
+			<result>data.json</result>
+		</action>
+	</package>
+</struts>

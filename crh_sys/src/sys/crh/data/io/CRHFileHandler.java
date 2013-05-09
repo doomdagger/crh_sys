@@ -29,6 +29,7 @@ public class CRHFileHandler implements ServletContextAware{
 	
 	public void init(){
 		ServletContextResource resource = new ServletContextResource(context, "/res/recordFile");
+		context.setAttribute("message", "This is a trick");
 		try {
 			this.root = resource.getFile();
 		} catch (IOException e) {

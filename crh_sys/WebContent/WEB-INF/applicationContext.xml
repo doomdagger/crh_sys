@@ -27,6 +27,10 @@
 		p:password="${jdbc.password}">
 	</bean>
 	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+	p:dataSource-ref="dataSource">
+	</bean>
+	
 	<bean id="template" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg>
 			<ref bean="dataSource"></ref>
@@ -36,4 +40,17 @@
 	<bean id="crhDao" class="sys.crh.data.dao.CRHDao" p:template-ref="template"></bean>
 	<bean id="crhFileHandler" class="sys.crh.data.io.CRHFileHandler" init-method="init"></bean>
 	<bean id="crhService" class="sys.crh.data.service.CRHService" p:dao-ref="crhDao" p:handler-ref="crhFileHandler" init-method="init"></bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* sys.crh.data.dao.CRHDao.*(..))" id="defaultPointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="defaultPointcut"/>
+	</aop:config>
 </beans>

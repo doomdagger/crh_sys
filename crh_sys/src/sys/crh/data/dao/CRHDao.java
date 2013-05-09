@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sys.crh.data.model.MTrain;
 import sys.crh.data.model.RealTimeData;
 import sys.crh.data.model.Crh;
 import sys.crh.data.model.Engine;
@@ -37,6 +38,12 @@ public class CRHDao {
 			"VALUES (:crhNo, :crhModelType, :crhType, :factory, :produceDate, :routeLine, :remark, :createTime, :editTime, :creator, :editor)";
 	public static final String addEngineSQL="INSERT INTO `train_sys`.`t_engine` (`FEngineID`, `id_t_crh`, `FSetupType`, `FSuitTrain`, `FPower`, `Fvoltage`, `FNumber`, `FLineType`, `FJYRank`, `FCoolType`, `FWeight`, `FMaxrevolution`, `FWorkType`, `FTFQuality`, `FDiaTemper`, `FDiaSpeed`, `FProduceFac`, `FProduceDate`) " +
 			"VALUES (:engineNo, :crhId, :setupType, :suitTrain, :power, :voltage, :number, :lineType, :jyRank, :coolType, :weight, :maxRevolution, :workType, :tfQuality, :diaTemper, :diaSpeed, :produceFactory, :produceDate)";
+	
+	
+	//I have to add some methods for obtaining m_train
+	public static final String queryForMTrainSQL = "SELECT * FROM m_train";
+	public static final String queryForMTrainWithCrhType = "SELECT * FROM m_train WHERE FCRHType = :crhType";
+	
 	
 	private NamedParameterJdbcTemplate template;
 	public void setTemplate(NamedParameterJdbcTemplate template){
@@ -211,4 +218,43 @@ public class CRHDao {
 			return rel;
 		}
 	}
+	
+	public List<MTrain> queryForMTrain(){
+		SqlParameterSource sps = new MapSqlParameterSource();
+		return template.query(queryForMTrainSQL, sps, new RowMapper<MTrain>(){
+			public MTrain mapRow(ResultSet rs, int index) throws SQLException{
+				MTrain mtrain = new MTrain();
+				mtrain.setId(rs.getLong("ID"));
+				mtrain.setCrhType(rs.getString("FCRHType"));
+				mtrain.setCrhModelType(rs.getString("FCRHModelType"));
+				String temp = "Cart";
+				short[] carts = new short[16];
+				for(int i = 1; i <= 16; i++ ){
+					carts[i-1] = (short)rs.getInt(temp+i);
+				}
+				mtrain.setCarts(carts);
+				return mtrain;
+			}
+		});
+	}
+	
+	public MTrain queryForMTrainWithCrhType(String crhType){
+		SqlParameterSource sps = new MapSqlParameterSource().addValue("crhType", crhType);
+		return template.queryForObject(queryForMTrainWithCrhType, sps, new RowMapper<MTrain>(){
+			public MTrain mapRow(ResultSet rs, int index) throws SQLException{
+				MTrain mtrain = new MTrain();
+				mtrain.setId(rs.getLong("ID"));
+				mtrain.setCrhType(rs.getString("FCRHType"));
+				mtrain.setCrhModelType(rs.getString("FCRHModelType"));
+				String temp = "Cart";
+				short[] carts = new short[16];
+				for(int i = 1; i <= 16; i++ ){
+					carts[i-1] = (short)rs.getInt(temp+i);
+				}
+				mtrain.setCarts(carts);
+				return mtrain;
+			}
+		});
+	}
 }
+

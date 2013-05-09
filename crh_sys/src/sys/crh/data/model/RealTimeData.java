@@ -20,6 +20,25 @@ public class RealTimeData {
 	private double dzdianliu;
 	private Date dateTime;
 	
+	
+	//for display usage, I have to add two fields below
+	private String crhNo;
+	private String engineNo;
+	
+	public String getCrhNo(){
+		return this.crhNo;
+	}
+	public void setCrhNo(String crhNo){
+		this.crhNo = crhNo;
+	}
+	public String getEngineNo(){
+		return this.engineNo;
+	}
+	public void setEngineNo(String engineNo){
+		this.engineNo = engineNo;
+	}
+	
+	
 	public RealTimeData(){}
 	public RealTimeData(long id, double temperature, double speed){
 		this.id = id;

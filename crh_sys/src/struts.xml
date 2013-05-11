@@ -4,15 +4,26 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 	<constant name="struts.dev" value="true"></constant>
-	<package name="main" extends="struts-default" namespace="/">
+	<package name="main" extends="struts-default,json-default" namespace="/">
+		<result-types>
+			<result-type name="jsonResult" class="sys.crh.web.struts.result.JSONResult"></result-type>
+		</result-types>
 		<action name="index" class="sys.crh.web.struts.action.TestAction">
 			<result>/index.jsp</result>
 		</action>
-		<action name="realtimedata" class="sys.crh.web.struts.action.RealTimeDataAction">
-			<result>data.json</result>
+		<action name="realtimedata" method="groupData" class="sys.crh.web.struts.action.RealTimeDataAction">
+			<result name="groupData" type="json"> 
+				
+			</result>
+		</action>
+		<action name="crhtype" method="crhType" class="sys.crh.web.struts.action.RealTimeDataAction">
+			<result name="crhType" type="jsonResult">crhType</result>
 		</action>
 		<action name="queryhistorydata" class="sys.crh.web.struts.action.HistoryDataQuery">
 			<result>data.json</result>
+		</action>
+		<action name="jsontest" class="sys.crh.web.struts.action.JSONTestAction">
+			<result type="json"></result>
 		</action>
 	</package>
 </struts>

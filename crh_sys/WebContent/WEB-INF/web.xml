@@ -6,6 +6,9 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 <listener>
      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 </listener>
+<listener>
+    <listener-class>sys.crh.web.listener.SchedulerListener</listener-class>
+</listener>
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>

@@ -43,7 +43,8 @@ public class CRHDao {
 	//I have to add some methods for obtaining m_train
 	public static final String queryForMTrainSQL = "SELECT * FROM m_train";
 	public static final String queryForMTrainWithCrhType = "SELECT * FROM m_train WHERE FCRHType = :crhType";
-	
+	public static final String queryForAllCrhNo = "SELECT FCRHNo FROM t_crh";
+	public static final String queryForAllEngineNoWithCrhId = "SELECT FEngineID FROM t_engine WHERE id_t_crh = :crhId";
 	
 	private NamedParameterJdbcTemplate template;
 	public void setTemplate(NamedParameterJdbcTemplate template){
@@ -66,6 +67,19 @@ public class CRHDao {
 		return true;
 	}
 	
+	/*
+	 * serve for combo Box
+	 */
+	public List<String> queryForAllCrhNo(){
+		SqlParameterSource sps = new MapSqlParameterSource();
+		return template.queryForList(queryForAllCrhNo, sps, String.class);
+	}
+	
+	public List<String> queryForAllEngineNoWithCrhNo(String crhNo){
+		long crhId = this.queryForCrhIdWithCrhNo(crhNo);
+		SqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId);
+		return template.queryForList(queryForAllEngineNoWithCrhId, sps, String.class);
+	}
 	
 	/*
 	 * util:get crhNo With crhId and inverse

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,11 @@ import org.springframework.web.context.ServletContextAware;
 
 import sys.crh.data.dao.CRHDao;
 import sys.crh.data.io.CRHFileHandler;
+import sys.crh.data.model.Crh;
 import sys.crh.data.model.GroupRealTimeData;
 import sys.crh.data.model.MTrain;
 import sys.crh.data.model.RealTimeData;
+import sys.crh.data.model.Engine;
 
 public class CRHService  implements ServletContextAware{
 	private CRHDao dao;
@@ -45,6 +48,43 @@ public class CRHService  implements ServletContextAware{
 		}
 	}
 	
+	public boolean fetchAndPersistFileData(){
+		List<GroupRealTimeData> datas = null;
+		try {
+			datas =  this.loadFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		if(datas == null){
+			return false;
+		}
+		
+		long crhId;
+		long engineId;
+		
+		Iterator<GroupRealTimeData> iter = datas.iterator();
+		while(iter.hasNext()){
+			GroupRealTimeData group = iter.next();
+			List<RealTimeData> data = group.getDatas();
+			
+			
+			crhId = dao.queryForCrhIdWithCrhNo(data.get(0).getCrhNo());
+			engineId = dao.queryForEngineIdWithEngineNo(data.get(0).getEngineNo());
+			
+			Iterator<RealTimeData> iter2 = data.iterator();
+			while(iter2.hasNext()){
+				RealTimeData relTemp = iter2.next();
+				relTemp.setCrhId(crhId);
+				relTemp.setEngineId(engineId);
+			}
+			
+			dao.addBatchRealTimeData(data);
+		}
+		
+		return true;
+	}
 	
 	public List<GroupRealTimeData> loadFile() throws IOException{
 		File file = handler.nextFile();
@@ -120,6 +160,9 @@ public class CRHService  implements ServletContextAware{
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
+	public ServletContext getServletContext(){
+		return this.context;
+	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map[] tranverseRealTimeDatasToJSONType(List<RealTimeData> datas){
@@ -129,6 +172,7 @@ public class CRHService  implements ServletContextAware{
 		for(RealTimeData data : datas){
 			Map map = new HashMap();
 			map.put("engineNo", data.getEngineNo());
+			map.put("crhNo", data.getCrhNo());
 			map.put("ybdianya", data.getYbdianya());
 			map.put("ybdianliu", data.getYbdianliu());
 			map.put("kzdianya", data.getKzdianya());
@@ -144,5 +188,42 @@ public class CRHService  implements ServletContextAware{
 			maps[i++] = map;
 		}
 		return maps;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map[] getCrhList(){
+		List<Crh> list = dao.queryForAllSimpleCrh();
+		Map[] maps = new HashMap[list.size()];
+		int i = 0;
+		for(Crh crh : list){
+			Map temp = new HashMap();
+			temp.put("crhId", crh.getId());
+			temp.put("crhNo", crh.getCrhNo());
+			maps[i++] = temp;
+		}
+		return maps;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map[] getEngineList(long crhId){
+		List<Engine> list = dao.queryForAllSimpleEngineWithCrhId(crhId);
+		Map[] maps = new HashMap[list.size()];
+		int i = 0;
+		for(Engine engine : list){
+			Map temp = new HashMap();
+			temp.put("id", engine.getId());
+			temp.put("engineNo", engine.getEngineNo());
+			maps[i++] = temp;
+		}
+		return maps;
+	}
+	
+	
+	public Map[] getHistoryQueryOutput(int crhId, int engineId, Date startDate, Date endDate){
+		List<RealTimeData> list = null;
+		
+		
+		
+		return this.tranverseRealTimeDatasToJSONType(list);
 	}
 }

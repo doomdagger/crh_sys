@@ -44,7 +44,7 @@ public class DataGenerator {
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
 		for(int i = 0; i < 10; i++){
 			int index = random.nextInt(6);
-			int engineNum = (index>2)?8:5;
+			int engineNum = (index>2)?16:10;
 			ArrayList<RealTimeData> data = new ArrayList<RealTimeData>();
 			for(int j = 0; j < engineNum; j++){
 				RealTimeData rel = new RealTimeData();

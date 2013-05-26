@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.apache.struts2.interceptor.ApplicationAware;
 
-import sys.crh.data.model.GroupRealTimeData;
 //import sys.crh.data.model.RealTimeData;
 import sys.crh.data.service.CRHService;
 
@@ -17,7 +16,7 @@ public class RealTimeDataAction implements ApplicationAware{
 	public String groupData(){
 		//this.setJsonModel(((GroupRealTimeData)(application.get("onData"))).getDatas().toArray(new RealTimeData[0]));
 		this.setData(crhService.fetchRealTimeDataWithCrhId(crhId));
-		this.setCrhNo(((GroupRealTimeData)(application.get("onData"))).getDatas().get(0).getCrhNo());
+		this.setCrhNo(crhService.getCrhNoWithCrhId(crhId));
 		this.setModelType(crhService.getMTrainWithCrhNo(this.getCrhNo()).getCarts());
 		return GROUP_DATA;
 	}
@@ -62,6 +61,7 @@ public class RealTimeDataAction implements ApplicationAware{
 	}
 	
 	//business object
+	@SuppressWarnings("unused")
 	private Map<String, Object> application;
 	private CRHService crhService;
 	

@@ -2,6 +2,7 @@ package sys.crh.data.dao;
  
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,9 @@ import sys.crh.data.model.MTrain;
 import sys.crh.data.model.RealTimeData;
 
 public class CRHDao {
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	
+	
 	public static final String queryForCrhNoWithCrhIdSQL = "SELECT FCRHNo FROM t_crh WHERE ID=:crhId";
 	public static final String queryForCrhIdWithCrhNoSQL = "SELECT ID FROM t_crh WHERE FCRHNo=:crhNo";
 	public static final String queryForCrhWithCrhIdSQL = "SELECT * FROM t_crh WHERE ID=:crhId";
@@ -28,21 +32,21 @@ public class CRHDao {
 	public static final String queryForAllSimpleEngineWithCrhId = "SELECT ID,FEngineID FROM t_engine WHERE id_t_crh = :crhId";
 	public static final String addRealTimeDataSQL = "INSERT INTO t_realtimedata (`idt_engine`, `idt_crh`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime`) " +
 			"VALUES (:engineId,:crhId,:ybdianya,:ybdianliu,:kzdianya,:zjdianya,:djdianliu,:djpinlv,:qyzhidongli,:speed,:jiasudu,:temperature,:zdxinhao,:dzdianliu,:dateTime)";
-	public static final String queryForRealTimeDataSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID";
-	public static final String queryForRealTimeDataWithCrhNoSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId";
-	public static final String queryForRealTimeDataWithCrhNoAndEngineNoSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId";
-	public static final String queryForRealTimeDataWithCrhNoAndStartDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime >= :startDate";
-	public static final String queryForRealTimeDataWithCrhNoAndStartDateAndEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime >= :startDate AND FDatatime <= :endDate";
-	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate";
-	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID";
+	public static final String queryForRealTimeDataWithCrhNoSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId";
+	public static final String queryForRealTimeDataWithCrhNoAndEngineNoSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId";
+	public static final String queryForRealTimeDataWithCrhNoAndStartDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime >= :startDate";
+	public static final String queryForRealTimeDataWithCrhNoAndStartDateAndEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime >= :startDate AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate";
+	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime >= :startDate AND FDatatime <= :endDate";
 	
-	public static final String queryForRealTimeDataWithStartDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime >= :startDate";
-	public static final String queryForRealTimeDataWithEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime <= :endDate";
-	public static final String queryForRealTimeDataWithStartDateAndEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime >= :startDate AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataWithStartDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime >= :startDate";
+	public static final String queryForRealTimeDataWithEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataWithStartDateAndEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND FDatatime >= :startDate AND FDatatime <= :endDate";
 	
-	public static final String queryForRealTimeDataWithCrhNoAndEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataWithCrhNoAndEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime <= :endDate";
 	
-	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndEndDateSQL = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime <= :endDate";
+	public static final String queryForRealTimeDataWithCrhNoAndEngineNoAndEndDateSQL = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND idt_engine = :engineId AND FDatatime <= :endDate";
 	
 	public static final String addCrhSQL="INSERT INTO `t_crh` (`FCRHNo`, `FCRHModelType`, `FCRHType`, `FFactory`, `FProduceDate`, `FRouteline`, `FRemark`, `FCreatetime`, `FEdittime`, `FCreator`, `FEditor`) " +
 			"VALUES (:crhNo, :crhModelType, :crhType, :factory, :produceDate, :routeLine, :remark, :createTime, :editTime, :creator, :editor)";
@@ -50,7 +54,7 @@ public class CRHDao {
 			"VALUES (:engineNo, :crhId, :setupType, :suitTrain, :power, :voltage, :number, :lineType, :jyRank, :coolType, :weight, :maxRevolution, :workType, :tfQuality, :diaTemper, :diaSpeed, :produceFactory, :produceDate)";
 	
 	
-	public static final String fetchRealTimeDataWithCrhId = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND 'FDatatime' = (SELECT max(FDatatime) FROM t_realtimedata WHERE idt_crh = :crhId2)";
+	public static final String fetchRealTimeDataWithCrhId = "SELECT t_realtimedata.ID,`FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND FDatatime = (SELECT max(FDatatime) FROM t_realtimedata WHERE idt_crh = :crhId) ORDER BY t_realtimedata.ID DESC";
 	
 	//I have to add some methods for obtaining m_train
 	public static final String queryForMTrainSQL = "SELECT * FROM m_train";
@@ -101,8 +105,7 @@ public class CRHDao {
 		});
 	}
 	
-	public List<String> queryForAllEngineNoWithCrhNo(String crhNo){
-		long crhId = this.queryForCrhIdWithCrhNo(crhNo);
+	public List<String> queryForAllEngineNoWithCrhId(long crhId){
 		SqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId);
 		return template.queryForList(queryForAllEngineNoWithCrhId, sps, String.class);
 	}
@@ -227,15 +230,19 @@ public class CRHDao {
 		return template.query(queryForRealTimeDataSQL, new MapSqlParameterSource(), new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithStartDate(Date startDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", startDate);
+		String start = format.format(startDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", start);
 		return template.query(queryForRealTimeDataWithStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithEndDate(Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", endDate);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", end);
 		return template.query(queryForRealTimeDataWithEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithStartDateAndEndDate(Date startDate, Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", startDate).addValue("endDate", endDate);
+		String start = format.format(startDate);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", start).addValue("endDate", end);
 		return template.query(queryForRealTimeDataWithStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 
@@ -248,34 +255,44 @@ public class CRHDao {
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndStartDate(long crhId, Date startDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate);
+		String start = format.format(startDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", start);
 		return template.query(queryForRealTimeDataWithCrhNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndStartDateAndEndDate(long crhId, Date startDate, Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("endDate", endDate);
+		String start = format.format(startDate);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", start).addValue("endDate", end);
 		return template.query(queryForRealTimeDataWithCrhNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndStartDate(long crhId, long engineId, Date startDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("engineId", engineId);
+		String start = format.format(startDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", start).addValue("engineId", engineId);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndStartDateAndEndDate(long crhId,long engineId, Date startDate,Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("engineId", engineId).addValue("endDate", endDate);
+		String start = format.format(startDate);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", start).addValue("engineId", engineId).addValue("endDate", end);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEndDate(long crhId, Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", endDate);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", end);
 		return template.query(queryForRealTimeDataWithCrhNoAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndEndDate(long crhId, long engineId, Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", endDate).addValue("engineId", engineId);
+		String end = format.format(endDate);
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", end).addValue("engineId", engineId);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
 	
 	
 	public List<RealTimeData> fetchRealTimeDataWithCrhId(long crhId){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("crhId2", crhId);
-		return template.query(fetchRealTimeDataWithCrhId, sps, new RealTimeDataRowMapper());
+		int size = this.queryForAllEngineNoWithCrhId(crhId).size();
+		String tempSQL = CRHDao.fetchRealTimeDataWithCrhId+" LIMIT "+size;
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId);
+		return template.query(tempSQL, sps, new RealTimeDataRowMapper());
 	}
 
 	

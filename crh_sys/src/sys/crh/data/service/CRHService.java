@@ -47,7 +47,7 @@ public class CRHService  implements ServletContextAware{
 			e.printStackTrace();
 			System.err.println("CRHService : In Init method, load method throws IOExceptione");
 		}
-		this.fetchAndPersistFileData();
+		//this.fetchAndPersistFileData();
 	}
 	
 	public boolean fetchAndPersistFileData(){
@@ -73,11 +73,11 @@ public class CRHService  implements ServletContextAware{
 			
 			
 			crhId = dao.queryForCrhIdWithCrhNo(data.get(0).getCrhNo());
-			engineId = dao.queryForEngineIdWithEngineNoAndCrhId(data.get(0).getEngineNo(),crhId);
 			
 			Iterator<RealTimeData> iter2 = data.iterator();
 			while(iter2.hasNext()){
 				RealTimeData relTemp = iter2.next();
+				engineId = dao.queryForEngineIdWithEngineNoAndCrhId(relTemp.getEngineNo(),crhId);
 				relTemp.setCrhId(crhId);
 				relTemp.setEngineId(engineId);
 			}
@@ -100,7 +100,7 @@ public class CRHService  implements ServletContextAware{
 		
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 		while((line = reader.readLine()) != null){
 			GroupRealTimeData group = new GroupRealTimeData();
@@ -192,6 +192,7 @@ public class CRHService  implements ServletContextAware{
 			map.put("temperature", data.getTemperature());
 			map.put("zdxinhao", data.getZdxinhao());
 			map.put("dzdianliu", data.getDzdianliu());
+			map.put("dateTime", data.getDateTime());
 			maps[i++] = map;
 		}
 		return maps;
@@ -272,5 +273,9 @@ public class CRHService  implements ServletContextAware{
 	@SuppressWarnings("rawtypes")
 	public Map[] fetchRealTimeDataWithCrhId(long crhId){
 		return this.tranverseRealTimeDatasToJSONType(dao.fetchRealTimeDataWithCrhId(crhId));
+	}
+	
+	public String getCrhNoWithCrhId(long crhId){
+		return dao.queryForCrhNoWithCrhId(crhId);
 	}
 }

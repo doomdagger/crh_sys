@@ -43,7 +43,7 @@ public class DataGenerator {
 	
 	public static ArrayList<GroupRealTimeData> generateDatas(){
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		for(int i = 0; i < 10; i++){
 			int index = random.nextInt(6);
 			int engineNum = (index>2)?16:10;

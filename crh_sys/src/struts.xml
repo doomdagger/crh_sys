@@ -13,15 +13,15 @@
 		</action>
 		
 		<action name="crhList" class="sys.crh.web.struts.json.action.CrhListAction">
-		    <result type="jsonResult"></result>
+		    <result type="json"></result>
 		</action>
 		
 		<action name="engineList" class="sys.crh.web.struts.json.action.EngineListAction">
-			<result type="jsonResult"></result>
+			<result type="json"></result>
 		</action>
 		
 		<action name="historyQuery" class="sys.crh.web.struts.json.action.HistoryQueryAction">
-		    <result type="jsonResult"></result>
+		    <result type="json"></result>
 		</action>
 		
 		<action name="realtimedata" method="groupData" class="sys.crh.web.struts.action.RealTimeDataAction">
@@ -30,7 +30,7 @@
 			</result>
 		</action>
 		<action name="crhtype" method="crhType" class="sys.crh.web.struts.action.RealTimeDataAction">
-			<result name="crhType" type="jsonResult">crhType</result>
+			<result name="crhType" type="json">crhType</result>
 		</action>
 		<action name="queryhistorydata" class="sys.crh.web.struts.action.HistoryDataQuery">
 			<result>data.json</result>

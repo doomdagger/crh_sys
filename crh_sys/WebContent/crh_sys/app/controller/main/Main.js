@@ -420,7 +420,7 @@ Ext.define("CrhSys.controller.main.Main",{
         chartArray[10].store.loadData(gs11);
         chartArray[11].store.loadData(gs12);
         
-        console.log(chartArray[0].store.count());
+        //console.log(chartArray[0].store.count());
         
     }, 2000);
     
@@ -465,7 +465,9 @@ Ext.define("CrhSys.controller.main.Main",{
 		store.removeAll();
 		Ext.Ajax.request({
 			url : "engineList",
-			params : combo.getValue(),
+			params : {
+				"crhId" : combo.getValue()
+			},
 			timeout : 20000,
 			success : function(response){
 				Ext.Msg.hide();

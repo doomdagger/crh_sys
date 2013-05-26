@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class CRHService  implements ServletContextAware{
 			e.printStackTrace();
 			System.err.println("CRHService : In Init method, load method throws IOExceptione");
 		}
+		this.fetchAndPersistFileData();
 	}
 	
 	public boolean fetchAndPersistFileData(){
@@ -71,7 +73,7 @@ public class CRHService  implements ServletContextAware{
 			
 			
 			crhId = dao.queryForCrhIdWithCrhNo(data.get(0).getCrhNo());
-			engineId = dao.queryForEngineIdWithEngineNo(data.get(0).getEngineNo());
+			engineId = dao.queryForEngineIdWithEngineNoAndCrhId(data.get(0).getEngineNo(),crhId);
 			
 			Iterator<RealTimeData> iter2 = data.iterator();
 			while(iter2.hasNext()){
@@ -98,6 +100,8 @@ public class CRHService  implements ServletContextAware{
 		
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
 		
+		Date tempDate = new Date();
+		
 		while((line = reader.readLine()) != null){
 			GroupRealTimeData group = new GroupRealTimeData();
 			ArrayList<RealTimeData> subdatas = new ArrayList<RealTimeData>();
@@ -123,7 +127,7 @@ public class CRHService  implements ServletContextAware{
 				data.setSpeed(Double.valueOf(values[9]));
 				data.setJiasudu(Double.valueOf(values[10]));
 				data.setTemperature(Double.valueOf(values[11]));
-				data.setDateTime(new Date());
+				data.setDateTime(new Timestamp(tempDate.getTime()));
 				subdatas.add(data);
 			}
 			group.setDatas(subdatas);
@@ -135,8 +139,9 @@ public class CRHService  implements ServletContextAware{
 	}
 	
 	public RealTimeData prepareRealTimeDataForPersist(RealTimeData data){
-		data.setCrhId(dao.queryForCrhIdWithCrhNo(data.getCrhNo()));
-		data.setEngineId(dao.queryForEngineIdWithEngineNo(data.getEngineNo()));
+		long crhId = dao.queryForCrhIdWithCrhNo(data.getCrhNo());
+		data.setCrhId(crhId);
+		data.setEngineId(dao.queryForEngineIdWithEngineNoAndCrhId(data.getEngineNo(),crhId));
 		return data;
 	}
 	
@@ -218,12 +223,52 @@ public class CRHService  implements ServletContextAware{
 		return maps;
 	}
 	
-	
-	public Map[] getHistoryQueryOutput(int crhId, int engineId, Date startDate, Date endDate){
+	@SuppressWarnings("rawtypes")
+	public Map[] getHistoryQueryOutput(long crhId, long engineId, Date startDate, Date endDate){
 		List<RealTimeData> list = null;
-		
-		
-		
+		if(crhId == 0 && engineId ==0 && startDate == null && endDate == null){
+			list = dao.queryForRealTimeData();
+		}
+		else if(crhId == 0 && engineId ==0 && startDate != null && endDate == null){
+			list = dao.queryForRealTimeDataWithStartDate(startDate);
+		}
+		else if(crhId == 0 && engineId ==0 && startDate == null && endDate != null){
+			list = dao.queryForRealTimeDataWithEndDate(endDate);
+		}
+		else if(crhId == 0 && engineId ==0 && startDate != null && endDate != null){
+			list = dao.queryForRealTimeDataWithStartDateAndEndDate(startDate, endDate);
+		}
+		else if(crhId != 0 && engineId ==0 && startDate == null && endDate == null){
+			list = dao.queryForRealTimeDataWithCrhId(crhId);
+		}
+		else if(crhId != 0 && engineId !=0 && startDate == null && endDate == null){
+			list = dao.queryForRealTimeDataWithCrhIdAndEngineId(crhId, engineId);
+		}
+		else if(crhId != 0 && engineId ==0 && startDate != null && endDate == null){
+			list = dao.queryForRealTimeDataWithCrhIdAndStartDate(crhId, startDate);
+		}
+		else if(crhId != 0 && engineId ==0 && startDate != null && endDate != null){
+			list = dao.queryForRealTimeDataWithCrhIdAndStartDateAndEndDate(crhId, startDate, endDate);
+		}
+		else if(crhId != 0 && engineId !=0 && startDate != null && endDate == null){
+			list = dao.queryForRealTimeDataWithCrhIdAndEngineIdAndStartDate(crhId, engineId, startDate);
+		}
+		else if(crhId != 0 && engineId !=0 && startDate != null && endDate != null){
+			list = dao.queryForRealTimeDataWithCrhIdAndEngineIdAndStartDateAndEndDate(crhId, engineId, startDate, endDate);
+		}
+		else if(crhId != 0 && engineId ==0 && startDate == null && endDate != null){
+			list = dao.queryForRealTimeDataWithCrhIdAndEndDate(crhId, endDate);
+		}
+		else if(crhId != 0 && engineId !=0 && startDate == null && endDate != null){
+			list = dao.queryForRealTimeDataWithCrhIdAndEngineIdAndEndDate(crhId, engineId, endDate);
+		}
+
+
 		return this.tranverseRealTimeDatasToJSONType(list);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Map[] fetchRealTimeDataWithCrhId(long crhId){
+		return this.tranverseRealTimeDatasToJSONType(dao.fetchRealTimeDataWithCrhId(crhId));
 	}
 }

@@ -16,7 +16,7 @@ public class RealTimeDataAction implements ApplicationAware{
 	//action method one
 	public String groupData(){
 		//this.setJsonModel(((GroupRealTimeData)(application.get("onData"))).getDatas().toArray(new RealTimeData[0]));
-		this.setData(crhService.tranverseRealTimeDatasToJSONType(((GroupRealTimeData)(application.get("onData"))).getDatas()));
+		this.setData(crhService.fetchRealTimeDataWithCrhId(crhId));
 		this.setCrhNo(((GroupRealTimeData)(application.get("onData"))).getDatas().get(0).getCrhNo());
 		this.setModelType(crhService.getMTrainWithCrhNo(this.getCrhNo()).getCarts());
 		return GROUP_DATA;
@@ -54,6 +54,11 @@ public class RealTimeDataAction implements ApplicationAware{
 	}
 	public String getCrhNo(){
 		return crhNo;
+	}
+	
+	private long crhId;
+	public void setCrhId(long crhId){
+		this.crhId = crhId;
 	}
 	
 	//business object

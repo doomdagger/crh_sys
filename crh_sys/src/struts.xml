@@ -11,6 +11,19 @@
 		<action name="index" class="sys.crh.web.struts.action.TestAction">
 			<result>/index.jsp</result>
 		</action>
+		
+		<action name="crhList" class="sys.crh.web.struts.json.action.CrhListAction">
+		    <result type="jsonResult"></result>
+		</action>
+		
+		<action name="engineList" class="sys.crh.web.struts.json.action.EngineListAction">
+			<result type="jsonResult"></result>
+		</action>
+		
+		<action name="historyQuery" class="sys.crh.web.struts.json.action.HistoryQueryAction">
+		    <result type="jsonResult"></result>
+		</action>
+		
 		<action name="realtimedata" method="groupData" class="sys.crh.web.struts.action.RealTimeDataAction">
 			<result name="groupData" type="json"> 
 				

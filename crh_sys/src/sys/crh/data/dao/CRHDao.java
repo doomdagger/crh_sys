@@ -23,7 +23,7 @@ public class CRHDao {
 	public static final String queryForCrhWithCrhIdSQL = "SELECT * FROM t_crh WHERE ID=:crhId";
 	public static final String queryForAllSimpleCrh = "SELECT ID,FCRHNo FROM t_crh";
 	public static final String queryForEngineNoWithEngineIdSQL = "SELECT FEngineID FROM t_engine WHERE ID=:engineId";
-	public static final String queryForEngineIdWithEngineNoSQL = "SELECT ID FROM t_engine WHERE FEngineID=:engineNo";
+	public static final String queryForEngineIdWithEngineNoSQL = "SELECT ID FROM t_engine WHERE FEngineID=:engineNo AND id_t_crh=:crhId";
 	public static final String queryForEngineWithEngineIdSQL = "SELECT * FROM t_engine WHERE ID=:engineId";
 	public static final String queryForAllSimpleEngineWithCrhId = "SELECT ID,FEngineID FROM t_engine WHERE id_t_crh = :crhId";
 	public static final String addRealTimeDataSQL = "INSERT INTO t_realtimedata (`idt_engine`, `idt_crh`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime`) " +
@@ -49,6 +49,8 @@ public class CRHDao {
 	public static final String addEngineSQL="INSERT INTO `train_sys`.`t_engine` (`FEngineID`, `id_t_crh`, `FSetupType`, `FSuitTrain`, `FPower`, `Fvoltage`, `FNumber`, `FLineType`, `FJYRank`, `FCoolType`, `FWeight`, `FMaxrevolution`, `FWorkType`, `FTFQuality`, `FDiaTemper`, `FDiaSpeed`, `FProduceFac`, `FProduceDate`) " +
 			"VALUES (:engineNo, :crhId, :setupType, :suitTrain, :power, :voltage, :number, :lineType, :jyRank, :coolType, :weight, :maxRevolution, :workType, :tfQuality, :diaTemper, :diaSpeed, :produceFactory, :produceDate)";
 	
+	
+	public static final String fetchRealTimeDataWithCrhId = "SELECT `FEngineID`, `FCRHNo`, `Fyb_dianya`, `Fyb_dianliu`, `Fkz_dianya`, `Fzj_dianya`, `Fdj_dianliu`, `Fdj_pinlv`, `Fzdxinhao`, `Fdzdianliu`, `Fqy_kongzhili`, `FSpeed`, `Fjiasudu`, `Ftemperature`, `FDatatime` FROM t_realtimedata,t_crh,t_engine WHERE t_realtimedata.idt_engine=t_engine.ID AND t_realtimedata.idt_crh=t_crh.ID AND idt_crh = :crhId AND 'FDatatime' = (SELECT max(FDatatime) FROM t_realtimedata WHERE idt_crh = :crhId2)";
 	
 	//I have to add some methods for obtaining m_train
 	public static final String queryForMTrainSQL = "SELECT * FROM m_train";
@@ -162,8 +164,8 @@ public class CRHDao {
 		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("engineId", engineId);
 		return template.queryForObject(queryForEngineNoWithEngineIdSQL, sps, String.class);
 	}
-	public long queryForEngineIdWithEngineNo(String engineNo){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("engineNo", engineNo);
+	public long queryForEngineIdWithEngineNoAndCrhId(String engineNo,long crhId){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("engineNo", engineNo).addValue("crhId", crhId);
 		return template.queryForLong(queryForEngineIdWithEngineNoSQL, sps);
 	}
 	public Engine queryForEngineWithEngineId(long engineId){
@@ -236,31 +238,46 @@ public class CRHDao {
 		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("startDate", startDate).addValue("endDate", endDate);
 		return template.query(queryForRealTimeDataWithStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	
+
 	public List<RealTimeData> queryForRealTimeDataWithCrhId(long crhId){
 		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId);
 		return template.query(queryForRealTimeDataWithCrhNoSQL, sps, new RealTimeDataRowMapper());
 	}
-	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineNo(long crhId, long engineId){
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineId(long crhId, long engineId){
 		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("engineId", engineId);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoSQL, sps, new RealTimeDataRowMapper());
 	}
-	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDate(String crhNo, Date startDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate);
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndStartDate(long crhId, Date startDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate);
 		return template.query(queryForRealTimeDataWithCrhNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndStartDateAndEndDate(String crhNo, Date startDate, Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("endDate", endDate);
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndStartDateAndEndDate(long crhId, Date startDate, Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("endDate", endDate);
 		return template.query(queryForRealTimeDataWithCrhNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDate(String crhNo, String engineNo, Date startDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("engineNo", engineNo);
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndStartDate(long crhId, long engineId, Date startDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("engineId", engineId);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateSQL, sps, new RealTimeDataRowMapper());
 	}
-	public List<RealTimeData> queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDate(String crhNo,String engineNo, Date startDate,Date endDate){
-		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhNo", crhNo).addValue("startDate", startDate).addValue("engineNo", engineNo).addValue("endDate", endDate);
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndStartDateAndEndDate(long crhId,long engineId, Date startDate,Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("startDate", startDate).addValue("engineId", engineId).addValue("endDate", endDate);
 		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndStartDateAndEndDateSQL, sps, new RealTimeDataRowMapper());
 	}
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEndDate(long crhId, Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", endDate);
+		return template.query(queryForRealTimeDataWithCrhNoAndEndDateSQL, sps, new RealTimeDataRowMapper());
+	}
+	public List<RealTimeData> queryForRealTimeDataWithCrhIdAndEngineIdAndEndDate(long crhId, long engineId, Date endDate){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("endDate", endDate).addValue("engineId", engineId);
+		return template.query(queryForRealTimeDataWithCrhNoAndEngineNoAndEndDateSQL, sps, new RealTimeDataRowMapper());
+	}
+	
+	
+	public List<RealTimeData> fetchRealTimeDataWithCrhId(long crhId){
+		MapSqlParameterSource sps = new MapSqlParameterSource().addValue("crhId", crhId).addValue("crhId2", crhId);
+		return template.query(fetchRealTimeDataWithCrhId, sps, new RealTimeDataRowMapper());
+	}
+
 	
 	private class RealTimeDataRowMapper implements RowMapper<RealTimeData>{
 		public RealTimeData mapRow(ResultSet rs, int index) throws SQLException{
@@ -280,7 +297,7 @@ public class CRHDao {
 			rel.setSpeed(rs.getDouble("FSpeed"));
 			rel.setJiasudu(rs.getDouble("Fjiasudu"));
 			rel.setTemperature(rs.getDouble("Ftemperature"));
-			rel.setDateTime(rs.getDate("FDatatime"));
+			rel.setDateTime(rs.getTimestamp("FDatatime"));
 			return rel;
 		}
 	}

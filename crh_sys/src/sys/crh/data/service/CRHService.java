@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,10 +20,10 @@ import org.springframework.web.context.ServletContextAware;
 import sys.crh.data.dao.CRHDao;
 import sys.crh.data.io.CRHFileHandler;
 import sys.crh.data.model.Crh;
+import sys.crh.data.model.Engine;
 import sys.crh.data.model.GroupRealTimeData;
 import sys.crh.data.model.MTrain;
 import sys.crh.data.model.RealTimeData;
-import sys.crh.data.model.Engine;
 
 public class CRHService  implements ServletContextAware{
 	private CRHDao dao;
@@ -100,12 +100,14 @@ public class CRHService  implements ServletContextAware{
 		
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
 		
-		Date tempDate = new Date();
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
+
 		while((line = reader.readLine()) != null){
 			GroupRealTimeData group = new GroupRealTimeData();
 			ArrayList<RealTimeData> subdatas = new ArrayList<RealTimeData>();
 			String crhNo = line.trim();
+			Date tempDate = new Date();
+			String tempStr = format.format(tempDate);
 			while(!(line = reader.readLine().trim()).equals("")){
 				RealTimeData data = new RealTimeData();
 				data.setCrhNo(crhNo);
@@ -127,7 +129,7 @@ public class CRHService  implements ServletContextAware{
 				data.setSpeed(Double.valueOf(values[9]));
 				data.setJiasudu(Double.valueOf(values[10]));
 				data.setTemperature(Double.valueOf(values[11]));
-				data.setDateTime(new Timestamp(tempDate.getTime()));
+				data.setDateTime(tempStr);
 				subdatas.add(data);
 			}
 			group.setDatas(subdatas);

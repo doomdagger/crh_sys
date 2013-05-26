@@ -1,21 +1,21 @@
 package sys.crh.data.dao;
  
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sys.crh.data.model.MTrain;
-import sys.crh.data.model.RealTimeData;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 import sys.crh.data.model.Crh;
 import sys.crh.data.model.Engine;
+import sys.crh.data.model.MTrain;
+import sys.crh.data.model.RealTimeData;
 
 public class CRHDao {
 	public static final String queryForCrhNoWithCrhIdSQL = "SELECT FCRHNo FROM t_crh WHERE ID=:crhId";
@@ -297,7 +297,7 @@ public class CRHDao {
 			rel.setSpeed(rs.getDouble("FSpeed"));
 			rel.setJiasudu(rs.getDouble("Fjiasudu"));
 			rel.setTemperature(rs.getDouble("Ftemperature"));
-			rel.setDateTime(rs.getTimestamp("FDatatime"));
+			rel.setDateTime(rs.getString("FDatatime"));
 			return rel;
 		}
 	}

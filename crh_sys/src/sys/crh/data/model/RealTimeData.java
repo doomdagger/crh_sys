@@ -1,6 +1,5 @@
 package sys.crh.data.model;
   
-import java.sql.Timestamp;
 
 public class RealTimeData {
 	private long id;
@@ -18,7 +17,7 @@ public class RealTimeData {
 	private double temperature;
 	private double zdxinhao;
 	private double dzdianliu;
-	private Timestamp dateTime;
+	private String dateTime;
 	
 	
 	//for display usage, I have to add two fields below
@@ -47,7 +46,7 @@ public class RealTimeData {
 	}
 	public RealTimeData(long id, long engineId, long crhId, double ybdianya, double ybdianliu, double kzdianya, double zjdianya,
 			double djdianliu, double djpinlv, double qyzhidongli, double speed, double jiasudu, 
-			double temperature, double zdxinhao, double dzdianliu, Timestamp dateTime){
+			double temperature, double zdxinhao, double dzdianliu, String dateTime){
 		this.id = id;
 		this.engineId = engineId;
 		this.crhId = crhId;
@@ -66,10 +65,10 @@ public class RealTimeData {
 		this.dateTime = dateTime;
 	}
 	
-	public void setDateTime(Timestamp dateTime){
+	public void setDateTime(String dateTime){
 		this.dateTime = dateTime;
 	}
-	public Timestamp getDateTime(){
+	public String getDateTime(){
 		return this.dateTime;
 	}
 	

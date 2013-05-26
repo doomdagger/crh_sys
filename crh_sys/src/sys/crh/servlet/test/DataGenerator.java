@@ -3,7 +3,7 @@ package sys.crh.servlet.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,11 +43,13 @@ public class DataGenerator {
 	
 	public static ArrayList<GroupRealTimeData> generateDatas(){
 		ArrayList<GroupRealTimeData> datas = new ArrayList<GroupRealTimeData>();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
 		for(int i = 0; i < 10; i++){
 			int index = random.nextInt(6);
 			int engineNum = (index>2)?16:10;
 			ArrayList<RealTimeData> data = new ArrayList<RealTimeData>();
 			Date tempDate = new Date();
+			String tempStr = format.format(tempDate);
 			for(int j = 0; j < engineNum; j++){
 				RealTimeData rel = new RealTimeData();
 				rel.setCrhNo(crhNos[index]);
@@ -64,7 +66,7 @@ public class DataGenerator {
 				rel.setSpeed((int)(Math.random()*10000)/factors[random.nextInt(2)]);
 				rel.setJiasudu((int)(Math.random()*10000)/factors[random.nextInt(2)]);
 				rel.setTemperature((int)(Math.random()*10000)/factors[random.nextInt(2)]);
-				rel.setDateTime(new Timestamp(tempDate.getTime()));
+				rel.setDateTime(tempStr);
 				data.add(rel);
 			}
 			GroupRealTimeData group = new GroupRealTimeData();

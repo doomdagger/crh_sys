@@ -6,7 +6,7 @@ Ext.define("CrhSys.controller.main.Main",{
 				'CrhSys.store.realtimedata.CartDatas'],
 	
 	mainDataStore : Ext.create('CrhSys.store.realtimedata.RealtimeDatas'),
-
+	cartsStore : Ext.create('CrhSys.store.realtimedata.CartDatas'),
 	valueArray : [0,0,0,0,0,0,0,0,0,0,0,0],
 	cartsArray : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	
@@ -84,6 +84,9 @@ Ext.define("CrhSys.controller.main.Main",{
 			},
 			'#mainpanel #realtimecurvepanel' : {
 				afterrender : me.animateCharts
+			},
+			'#mainpanel #realtimedatapanel' : {
+				afterrender : me.initCartGridStore
 			}
 		});
 		
@@ -96,7 +99,16 @@ Ext.define("CrhSys.controller.main.Main",{
 		
 	},
 	
-	
+	initCartGridStore : function() {
+		var me = this;
+		var grid = Ext.ComponentQuery.query('#mainpanel #realtimedatapanel #cartGrid')[0];
+
+		grid.store = me.cartsStore;
+		grid.store.each(function(item,index){
+			console.log(item.get('name')+' '+item.get('cart1')+' '+item.get('cart2')+' '+item.get('cart3')+' '+item.get('cart4')+' '+item.get('cart5')+' '+item.get('cart6')+' '+item.get('cart7')+' '+item.get('cart8'));
+		});
+		console.log("Nothing happens");
+	},
 	
 	updateCartsStore : function(){
 		var me = this;
@@ -153,11 +165,9 @@ Ext.define("CrhSys.controller.main.Main",{
 				
 			}
 		});
-		var grid = Ext.ComponentQuery.query('#mainpanel #realtimedatapanel #cartGrid')[0];
-		var myStore = grid.getStore();
-		myStore.removeAll();
+		me.cartsStore.removeAll();
 		for(i = 0; i < 12; i++){
-			myStore.add(models[i]);
+			me.cartsStore.add(models[i]);
 		}
 	},
 	

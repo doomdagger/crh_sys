@@ -2,6 +2,7 @@ package sys.crh.web.struts.json.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import sys.crh.data.service.CRHService;
@@ -10,13 +11,27 @@ import com.opensymphony.xwork2.Action;
 @SuppressWarnings("rawtypes")
 public class HistoryQueryAction {
 	public String execute(){
-		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		System.out.println(startDate + "  " + endDate);
-		try {
-			this.setData(crhService.getHistoryQueryOutput(crhId, engineId, format.parse(startDate), format.parse(endDate)));
-		} catch (ParseException e) {
-			e.printStackTrace();
+		Date start = null;
+		Date end = null;
+		if(startDate!=null&&!startDate.trim().equals("")){
+			try {
+				start = format.parse(startDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
+		if(endDate!=null&&!endDate.trim().equals("")){
+			try {
+				end = format.parse(endDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		this.setData(crhService.getHistoryQueryOutput(crhId, engineId, start, end));
+		
 		
 		return Action.SUCCESS;
 	}

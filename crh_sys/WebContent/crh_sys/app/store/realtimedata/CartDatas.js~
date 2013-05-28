@@ -1,0 +1,7 @@
+Ext.define("CrhSys.store.realtimedata.CartDatas",{
+	extend : 'Ext.data.Store',
+	requires : ['CrhSys.model.realtimedata.CartData'],
+	alias : 'store.cartdatas',
+	model : 'CrhSys.model.realtimedata.CartData'
+	
+});

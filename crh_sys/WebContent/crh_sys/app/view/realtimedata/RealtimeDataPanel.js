@@ -2,24 +2,83 @@ Ext.define("CrhSys.view.realtimedata.RealtimeDataPanel",{
 	extend : "Ext.panel.Panel",
 	alias : "widget.realtimedatapanel",
 	requires : ["CrhSys.store.realtimedata.CrhNos","CrhSys.model.realtimedata.CrhNo",
-				'CrhSys.store.realtimedata.RealtimeDatas',"CrhSys.model.realtimedata.RealtimeData"],
+				'CrhSys.store.realtimedata.RealtimeDatas',"CrhSys.model.realtimedata.RealtimeData",
+				'CrhSys.view.realtimedata.CartGrid'],
 	title : "实时数据",
+	layout : "fit",
+	
+	items : [{
+		xtype : 'panel',
+		dockedItems : [{
+			xtype : "toolbar",
+			layout : {
+				type : 'hbox',
+				align : 'middle'
+			},
+			defaults : {
+				xtype : 'button',
+				scale : 'medium',
+				text : 'Cart Pic',
+				flex : 1
+			},
+			items : [{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			},{
+				iconCls : ''
+			}]
+		}],
+		layout : 'fit',
+		items : [{
+			xtype : 'cartgrid',
+			itemId : 'cartGrid'
+		}],
+	}],
+	
+	
 	initComponent : function(){
 		var me = this;
 		
 		me.dockedItems = me.buildDockedItems();
 		
-		me.items = me.buildItems();
 		
-		me.html = "<h1>Table will be here</h1>";
+		//me.html = "<iframe src='../app/realtimedata.html' width='100%' height='100%'></iframe>";
 		
 		me.callParent();
 	},
 	
-	buildItems : function(){
-		
-		return [];
-	},
+	
 	
 	buildDockedItems : function(){
 		//var me = this;

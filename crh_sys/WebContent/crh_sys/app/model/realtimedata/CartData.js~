@@ -1,0 +1,23 @@
+Ext.define("CrhSys.model.realtimedata.CartData",{
+	extend : 'Ext.data.Model',
+
+	fields : [
+	    {name : 'name', type : 'string'},
+	    {name : 'cart1', type : 'float'},
+	    {name : 'cart2', type : 'float'},
+	    {name : 'cart3', type : 'float'},
+	    {name : 'cart4', type : 'float'},
+	    {name : 'cart5', type : 'float'},
+	    {name : 'cart6', type : 'float'},
+	    {name : 'cart7', type : 'float'},
+	    {name : 'cart8', type : 'float'},
+	    {name : 'cart9', type : 'float'},
+	    {name : 'cart10', type : 'float'},
+	    {name : 'cart11', type : 'float'},
+	    {name : 'cart12', type : 'float'},
+	    {name : 'cart13', type : 'float'},
+	    {name : 'cart14', type : 'float'},
+	    {name : 'cart15', type : 'float'},
+	    {name : 'cart16', type : 'float'}
+	]
+});

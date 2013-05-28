@@ -17,6 +17,6 @@ Ext.define("CrhSys.model.realtimedata.RealtimeData",{
 		{name:'temperature', type:'float'},
 		{name:'zdxinhao', type:'float'},
 		{name:'dzdianliu', type:'float'},
-		{name:'dateTime', type:'date',dateFormat:'Y-m-d H:i:s'}
+		{name:'dateTime', type:'string'}
 	]
 });

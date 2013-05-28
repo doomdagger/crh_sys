@@ -3,7 +3,6 @@ Ext.define('CrhSys.store.realtimedata.RealtimeDatas', {
     requires : ["CrhSys.model.realtimedata.RealtimeData"],
 	alias : 'store.realtimedatas',
 	model	: "CrhSys.model.realtimedata.RealtimeData",
-
 	proxy	: {
 		type	: 'ajax',
 		url	: 'serverside/realtimeDataList.json',

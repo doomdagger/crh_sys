@@ -32,14 +32,14 @@ Ext.define("CrhSys.view.historydata.HistoryPanel",{
 				items : [{
 					xtype : "button",
 					text : "查询",
-					scale : 'medium',
+					scale : 'large',
 					icon : "./images/zoom.png",
 					action : 'search'
 				},{
 					xtype : "button",
 					text : "重置",
-					scale : 'medium',
-					icon : "./images/delete16.png",
+					scale : 'large',
+					icon : "./images/delete32.png",
 					action : 'reset'
 				}] 
 			}],

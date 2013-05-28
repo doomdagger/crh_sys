@@ -1,0 +1,130 @@
+Ext.define("CrhSys.view.realtimedata.CartGrid",{
+	extend      : 'Ext.grid.Panel',
+	requires : ["CrhSys.store.realtimedata.CartDatas"],
+	alias       : 'widget.cartgrid',
+	selType:'cellmodel',
+	
+	initComponent   : function(){
+		var me = this;
+
+		me.store = me.buildStore();
+		me.columns = me.buildColumns();
+		me.callParent();
+	},
+
+	buildColumns	: function(){
+		return [
+            {
+                xtype:'rownumberer'
+            },
+            {
+                text:'参数名称',
+                xtype:'templatecolumn',
+                flex:1,
+                dataIndex:'name',
+                tpl : '<b>{name}</b>'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart1'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart2'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart3'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart4'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart5'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart6'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart7'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart8'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart9'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart10'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart11'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart12'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart13'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart14'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart15'
+            },
+            {
+                text:'',
+                xtype:'numbercolumn',
+                flex : 1,
+                dataIndex:'cart16'
+            }
+        ];
+	},
+
+	buildStore	: function(){
+		return Ext.create('CrhSys.store.realtimedata.CartDatas',{
+		});
+	}
+});

@@ -9,9 +9,20 @@ Ext.define("CrhSys.view.historydata.HistoryGrid",{
 
 		me.store = me.buildStore();
 		me.columns = me.buildColumns();
-
+		me.dockedItems = me.buildDockedItems();
 		me.callParent();
 	},
+	
+	buildDockedItems : function(){
+		var me = this;
+		return [{
+			xtype : 'pagingtoolbar',
+			dock : "top",
+			store : me.store,
+			displayInfo : true
+		}];
+	},
+	
 
 	buildColumns	: function(){
 		return [
@@ -31,7 +42,7 @@ Ext.define("CrhSys.view.historydata.HistoryGrid",{
                 flex : 2,
                 dataIndex:'crhNo',
                 format : 'Y-m-d H:m:s',
-				tpl:'<b>{engineNo}</b> </br>{dateTime}'	
+				tpl:'<b>{crhNo}</b> </br>{dateTime}'	
             },
             {
                 text:'原边电压',
@@ -110,7 +121,6 @@ Ext.define("CrhSys.view.historydata.HistoryGrid",{
 
 	buildStore	: function(){
 		return Ext.create('CrhSys.store.realtimedata.RealtimeDatas',{
-			pageSize:10
 		});
 	}
 });

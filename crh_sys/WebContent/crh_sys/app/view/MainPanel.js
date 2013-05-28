@@ -45,19 +45,22 @@ Ext.define("CrhSys.view.MainPanel",{
 	
 		var realtimedataItem = Ext.create("Ext.menu.Item",{
 			text : "实时数据",
-			itemId : 'realtimedataItem'
+			itemId : 'realtimedataItem',
+			iconCls : 'invoices-icon16'
 		});
 		
 		
 		var realtimecurveItem = Ext.create("Ext.menu.Item",{
 			text : "实时曲线",
-			itemId : "realtimecurveItem"
+			itemId : "realtimecurveItem",
+			iconCls : 'new-icon16'
 		});
 		
 
 		var historydataItem = Ext.create("Ext.menu.Item",{
 			text : "历史数据",
-			itemId : "historydataItem"
+			itemId : "historydataItem",
+			iconCls : 'save-icon16'
 		});
 		
 		
@@ -69,6 +72,7 @@ Ext.define("CrhSys.view.MainPanel",{
 			{
 				xtype : "button",
 				text : "在线监测",
+				iconCls : 'categories-icon16',
 				menu : [realtimedataItem,realtimecurveItem,historydataItem]
 			},{
 				xtype : "tbfill"

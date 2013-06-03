@@ -10,6 +10,8 @@ Ext.define("CrhSys.controller.main.Main",{
 	valueArray : [0,0,0,0,0,0,0,0,0,0,0,0],
 	cartsArray : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	
+	crhId : -1,
+	
 	init : function(){
 		var me = this;
 		

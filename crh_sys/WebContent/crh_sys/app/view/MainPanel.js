@@ -53,7 +53,7 @@ Ext.define("CrhSys.view.MainPanel",{
 		var realtimecurveItem = Ext.create("Ext.menu.Item",{
 			text : "实时曲线",
 			itemId : "realtimecurveItem",
-			iconCls : 'new-icon16'
+			icon : './images/page_go.png'
 		});
 		
 
@@ -76,6 +76,11 @@ Ext.define("CrhSys.view.MainPanel",{
 				menu : [realtimedataItem,realtimecurveItem,historydataItem]
 			},{
 				xtype : "tbfill"
+			},{
+				itemId : "refreshButton",
+				xtype : "button",
+				icon : "./images/page_go.png",
+				text : "--"
 			},{
 				xtype : "button",
 				text : "2013-05-22 10:44:03"

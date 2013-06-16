@@ -20,11 +20,17 @@ public class DataGenerator {
 		writeDataToFile(generateDatas(),new File("/home/lihe/Desktop"));
 	}
 	
-	public static void writeDataToFile(ArrayList<GroupRealTimeData> data, File root) throws IOException{
-		File path = new File(root,"/test.txt");
-		if(!path.exists()){
-			path.createNewFile();
-		}
+	public static String generateDateString(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.format(date);
+	}
+	public static String generateTimeString(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("hh-mm-ss");
+		return format.format(date);
+	}
+	
+	public static void writeDataToFile(ArrayList<GroupRealTimeData> data, File path) throws IOException{
+		
 		PrintWriter writer = new PrintWriter(path);
 		for(GroupRealTimeData group : data){
 			List<RealTimeData> list = group.getDatas();

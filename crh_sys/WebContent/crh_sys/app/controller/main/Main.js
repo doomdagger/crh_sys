@@ -11,6 +11,7 @@ Ext.define("CrhSys.controller.main.Main",{
 	cartsArray : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	
 	crhId : -1,
+	updateInterval : 24,
 	
 	init : function(){
 		var me = this;
@@ -29,6 +30,9 @@ Ext.define("CrhSys.controller.main.Main",{
 			},
 			'#mainpanel #maintoolbar #historydataItem' : {
 				click : me.showHistoryData
+			},
+			'#mainpanel #maintoolbar #refreshButton' : {
+				click : me.foreSendRequestData
 			},
 			'#mainpanel #realtimedatapanel #dockedForm #crhComboBox' : {
 				select : me.dataComboSelect
@@ -96,9 +100,29 @@ Ext.define("CrhSys.controller.main.Main",{
 			me.updateCartsStore();
 		});
 		
+		setInterval(function(){
+			if(me.crhId!=-1){
+				var refreshButton = Ext.ComponentQuery.query("#mainpanel #maintoolbar #refreshButton")[0];
+				refreshButton.setText(me.updateInterval+"");
+				if(me.updateInterval==0){
+					me.sendDataRequest(me.crhId);
+					//console.log("crhId = "+ me.crhId +", count time" + me.updateInterval);					
+					me.updateInterval=24;
+				}else{
+					me.updateInterval--;
+					//console.log("--" + "count time" + me.updateInterval);					
+				}
+			}else{
+				//console.log("crhId = -1, next time");
+			}
+		},1000);
+		
 	},
 	
-	
+	foreSendRequestData : function(){
+		//var me = this;
+		
+	},
 	
 	updateCartsStore : function(){
 		var me = this;
@@ -121,6 +145,12 @@ Ext.define("CrhSys.controller.main.Main",{
 		models[9].set('name','速度');
 		models[10].set('name','加速度');
 		models[11].set('name','温度');
+		
+		var flag = -1;
+		
+		var icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon1")[0];
+		icon.setIcon('./images/head.gif');
+		
 		i = 1;
 		Ext.each(me.cartsArray, function(item,index){
 			if(item==1){
@@ -138,6 +168,8 @@ Ext.define("CrhSys.controller.main.Main",{
 				models[9].set('cart'+(index+1),temp1.get('speed')+'/'+temp2.get('speed'));
 				models[10].set('cart'+(index+1),temp1.get('jiasudu')+'/'+temp2.get('jiasudu'));
 				models[11].set('cart'+(index+1),temp1.get('temperature')+'/'+temp2.get('temperature'));
+				icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon"+(index+2))[0];
+				icon.setIcon('./images/m.gif');
 				i+=2;
 			}else if(item==0||item==-1){
 				models[0].set('cart'+(index+1),'');
@@ -152,15 +184,38 @@ Ext.define("CrhSys.controller.main.Main",{
 				models[9].set('cart'+(index+1),'');
 				models[10].set('cart'+(index+1),'');
 				models[11].set('cart'+(index+1),'');
-				
+				if(item==0){
+					icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon"+(index+2))[0];
+					icon.setIcon('./images/t.gif');
+				}else{
+					if(flag==-1){
+						flag = index;
+						icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon"+(index+2))[0];
+						icon.setIcon('./images/tail.gif');
+					}else{
+						icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon"+(index+2))[0];
+						icon.setIcon('');
+					}
+				}
 			}
 		});
+		
+		if(me.cartsArray[15]!=-1){
+			icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon18")[0];
+			icon.setIcon('./images/tail.gif');
+		}else{
+			icon = Ext.ComponentQuery.query("#mainpanel #realtimedatapanel #cartIcon18")[0];
+			icon.setIcon('');
+		}
+		
 		var grid = Ext.ComponentQuery.query('#mainpanel #realtimedatapanel #cartGrid')[0];
 		var myStore = grid.getStore();
 		myStore.removeAll();
 		for(i = 0; i < 12; i++){
 			myStore.add(models[i]);
 		}
+		
+		
 	},
 	
 	updateChartsStore : function(index){
@@ -234,7 +289,7 @@ Ext.define("CrhSys.controller.main.Main",{
             	date = new Date(2011, 1, 1);
         	return function() {
             	if(data.length>10){
-            		data = data.slice(data.length-10,data.length);
+            		data = data.slice(data.length-10, data.length);
             	}
             	data.push({
                 	date: Ext.Date.add(date, Ext.Date.DAY, i++),
@@ -544,6 +599,7 @@ Ext.define("CrhSys.controller.main.Main",{
 				Ext.Msg.hide();
 				var text = response.responseText;
 				var data = Ext.decode(text);
+				//console.log('about to load data combo box data');
 				store.loadData(data.data);
 			},
 			failure : function(){
@@ -589,20 +645,22 @@ Ext.define("CrhSys.controller.main.Main",{
 		mainlayout.setActiveItem(3);
 	},
 	dataComboSelect : function(combo, records){
+		var me = this;
 		var otherCombo = Ext.ComponentQuery.query('#mainpanel #realtimecurvepanel #dockedForm #crhComboBox')[0];
 		otherCombo.setValue(combo.getValue());
-		var crhId = {
+		me.crhId = {
 			"crhId" : combo.getValue()
 		};
-		this.sendDataRequest(crhId);
+		this.sendDataRequest(me.crhId);
 	},
 	curveComboSelect : function(combo, records){
+		var me = this;
 		var otherCombo = Ext.ComponentQuery.query('#mainpanel #realtimedatapanel #dockedForm #crhComboBox')[0];
 		otherCombo.setValue(combo.getValue());
-		var crhId = {
+		me.crhId = {
 			"crhId" : combo.getValue()
 		};
-		this.sendDataRequest(crhId);
+		this.sendDataRequest(me.crhId);
 	},
 	
 	sendDataRequest : function(crhId){
@@ -618,7 +676,8 @@ Ext.define("CrhSys.controller.main.Main",{
 				var data = Ext.decode(text);
 				me.cartsArray = data.modelType;
 				me.mainDataStore.loadData(data.data);
-				console.log(me.mainDataStore.count() + ' is loaded');
+				me.updateInterval = 24;
+				//console.log(me.mainDataStore.count() + ' is loaded');
 			},
 			failure : function(){
 				Ext.Msg.alert("Failure","Unable to load data from remote server!");

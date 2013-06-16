@@ -1,11 +1,16 @@
 package sys.crh.servlet.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+
 public class Test {
-	public static void main(String[] args){
-		String temp = "1,2,3,4,,6,7,8,9,10";
-		String[] temps = temp.split(",");
-		for(String s : temps){
-			System.out.println("value="+s);
-		}
+	public static void main(String[] args) throws IOException{
+		Date date = new Date();
+		String str = DataGenerator.generateTimeString(date);
+		System.out.println(str);
+		File text = new File(new File("/home/lihe"), DataGenerator.generateTimeString(date)+".txt");
+		text.createNewFile();
+		DataGenerator.writeDataToFile(DataGenerator.generateDatas(),text);
 	}
 }

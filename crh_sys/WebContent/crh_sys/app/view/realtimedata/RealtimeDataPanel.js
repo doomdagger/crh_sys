@@ -17,45 +17,63 @@ Ext.define("CrhSys.view.realtimedata.RealtimeDataPanel",{
 			},
 			defaults : {
 				xtype : 'button',
-				scale : 'medium',
-				text : 'Cart Pic',
+				scale : 'large',
+				text : '',
 				flex : 1
 			},
 			items : [{
+				itemId : 'cartIcon1',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon2',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon3',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon4',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon5',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon6',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon7',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon8',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon9',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon10',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon11',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon12',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon13',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon14',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon15',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon16',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon17',
 				iconCls : ''
 			},{
+				itemId : 'cartIcon18',
 				iconCls : ''
 			}]
 		}],

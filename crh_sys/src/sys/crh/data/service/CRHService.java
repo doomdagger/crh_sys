@@ -41,12 +41,14 @@ public class CRHService  implements ServletContextAware{
 	
 	public void init(){
 		this.mtrains = dao.queryForMTrain();
+		/*
 		try {
 			context.setAttribute("onData", this.loadFile().get(0));
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("CRHService : In Init method, load method throws IOExceptione");
 		}
+		*/
 		//this.fetchAndPersistFileData();
 	}
 	
@@ -136,6 +138,8 @@ public class CRHService  implements ServletContextAware{
 			datas.add(group);
 		}
 		reader.close();
+		
+		handler.createMarkFile(file);
 		
 		return datas;
 	}

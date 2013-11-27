@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>实时数据</title>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+        <!--  
+		<script type="text/javascript">
+			function fetchOnData(){
+					var onData;
+					var crhNo;
+					var crhModelType;
+					$.ajax({
+						// the URL for the request
+						url: "realtimedata",
+						// whether this is a POST or GET request
+						type: "GET",
+						// the type of data we expect back
+						dataType : "json",
+						// code to run if the request succeeds;
+						// the response is passed to the function
+						success: function( json ) {
+							onData = json;
+							crhNo = onData.crhNo;
+							crhModelType = [];
+							var index = 0;
+							$.each(onData.modelType, function(n, nitem){
+								if(nitem==-1){
+									$(".cart"+(n+1)).hide();
+								}else if(nitem==1){
+									$(".cart"+(n+1)).show();
+									$("td[class='cart"+(n+1)+"']").text("0");
+									
+									crhModelType[index++] = n+1;
+								}else if(nitem==0){
+									$(".cart"+(n+1)).show();
+									$("#engineNo th[class='cart"+(n+1)+"']").text("");
+									$("td[class='cart"+(n+1)+"']").text("");
+								}
+							});
+							$.each(onData.data, function(i,item){
+								$.each(item, function(key, value){
+									if(key != "engineNo")
+										$("#"+key+"  td[class='cart"+(crhModelType[i])+"']").text(value);
+									else
+										$("#"+key+"  th[class='cart"+(crhModelType[i])+"']").text(value);
+								});
+							});
+						}
+					});
+				}
+			$(document).ready(function(){
+				
+				fetchOnData();
+				setInterval("fetchOnData()",5000);
+			});
+		</script>
+		-->
+	</head>
+	<body>
+		<div id="head">
+			
+		</div>
+		<div id="body">
+			<table>
+				<tr id="header">
+					<th>数据参数</th>
+					<th class="cart1">Cart1</th>
+					<th class="cart2">Cart2</th>
+					<th class="cart3">Cart3</th>
+					<th class="cart4">Cart4</th>
+					<th class="cart5">Cart5</th>
+					<th class="cart6">Cart6</th>
+					<th class="cart7">Cart7</th>
+					<th class="cart8">Cart8</th>
+					<th class="cart9">Cart9</th>
+					<th class="cart10">Cart10</th>
+					<th class="cart11">Cart11</th>
+					<th class="cart12">Cart12</th>
+					<th class="cart13">Cart13</th>
+					<th class="cart14">Cart14</th>
+					<th class="cart15">Cart15</th>
+					<th class="cart16">Cart16</th>
+				</tr>
+				<tr id="engineNo">
+					<th> </th>
+					<th class="cart1">Engine No</th>
+					<th class="cart2">Engine No</th>
+					<th class="cart3">Engine No</th>
+					<th class="cart4">Engine No</th>
+					<th class="cart5">Engine No</th>
+					<th class="cart6">Engine No</th>
+					<th class="cart7">Engine No</th>
+					<th class="cart8">Engine No</th>
+					<th class="cart9">Engine No</th>
+					<th class="cart10">Engine No</th>
+					<th class="cart11">Engine No</th>
+					<th class="cart12">Engine No</th>
+					<th class="cart13">Engine No</th>
+					<th class="cart14">Engine No</th>
+					<th class="cart15">Engine No</th>
+					<th class="cart16">Engine No</th>
+				</tr>
+				<tr id="ybdianya">
+					<th>
+						原边电压
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="ybdianliu">
+					<th>
+						原边电流
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="kzdianya">
+					<th>
+						控制电压
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="zjdianya">
+					<th>
+						中间电压
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="djdianliu">
+					<th>
+						电机电流
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="djpinlv">
+					<th>
+						电机频率
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="zdxinhao">
+					<th>
+						振动信号
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="djdianliu">
+					<th>
+						定子电流
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="qyzhidongli">
+					<th>
+						牵引/制动力
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="speed">
+					<th>
+						速度
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="jiasudu">
+					<th>
+						加速度
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+				<tr id="temperature">
+					<th>
+						温度
+					</th>
+					<td class="cart1"></td>
+					<td class="cart2"></td>
+					<td class="cart3"></td>
+					<td class="cart4"></td>
+					<td class="cart5"></td>
+					<td class="cart6"></td>
+					<td class="cart7"></td>
+					<td class="cart8"></td>
+					<td class="cart9"></td>
+					<td class="cart10"></td>
+					<td class="cart11"></td>
+					<td class="cart12"></td>
+					<td class="cart13"></td>
+					<td class="cart14"></td>
+					<td class="cart15"></td>
+					<td class="cart16"></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

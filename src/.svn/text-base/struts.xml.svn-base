@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.dev" value="true"></constant>
+	<package name="main" extends="struts-default,json-default" namespace="/">
+		<result-types>
+			<result-type name="jsonResult" class="sys.crh.web.struts.result.JSONResult"></result-type>
+		</result-types>
+		<action name="index" class="sys.crh.web.struts.action.TestAction">
+			<result>/index.jsp</result>
+		</action>
+		
+		<action name="crhList" class="sys.crh.web.struts.json.action.CrhListAction">
+		    <result type="json"></result>
+		</action>
+		
+		<action name="LVMFileList" class="sys.crh.web.struts.json.action.LVMFileListAction">
+		    <result type="json"></result>
+		</action>
+		
+		<action name="LVMCompute" class="sys.crh.web.struts.json.action.MatlabComputeAction">
+		    <result type="json"></result>
+		</action>
+		
+		<action name="engineList" class="sys.crh.web.struts.json.action.EngineListAction">
+			<result type="json"></result>
+		</action>
+		
+		<action name="historyQuery" class="sys.crh.web.struts.json.action.HistoryQueryAction">
+		    <result type="json"></result>
+		</action>
+		
+		<action name="realtimedata" method="groupData" class="sys.crh.web.struts.action.RealTimeDataAction">
+			<result name="groupData" type="json"> 
+				
+			</result>
+		</action>
+		<action name="crhtype" method="crhType" class="sys.crh.web.struts.action.RealTimeDataAction">
+			<result name="crhType" type="json">crhType</result>
+		</action>
+		<action name="queryhistorydata" class="sys.crh.web.struts.action.HistoryDataQuery">
+			<result>data.json</result>
+		</action>
+		<action name="jsontest" class="sys.crh.web.struts.action.JSONTestAction">
+			<result type="json"></result>
+		</action>
+	</package>
+</struts>
